@@ -30,7 +30,7 @@ function updateVenda(req, res) {
         body += chunk.toString()
     })
     req.on('end', () => {
-        const index = vendas.findIndex(venda => venda.codVendedor == vendaSearch)
+        const index = vendas.findIndex(venda => venda.codVenda == vendaSearch)
         if (index >= 0) {
             vendas[index] = JSON.parse(body)
             res.statusCode = 200
@@ -44,7 +44,7 @@ function updateVenda(req, res) {
 
 function eraseVenda(req, res) {
     const vendaSearch = req.url.split('/')[2]
-    const index = vendas.findIndex(venda => venda.codVendedor == vendaSearch)
+    const index = vendas.findIndex(venda => venda.codVenda == vendaSearch)
     if (index >= 0) {
         vendas.splice(index, 1);
         res.statusCode = 200

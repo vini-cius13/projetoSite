@@ -61,7 +61,7 @@
                             <input type="number" class="form-control" id="codVendaAdd">
                         </div>
                         <div class="mb-2">
-                            <label for="valorAdd" class="form-label">Valor da Venda</label>
+                            <label for="valorVendaAdd" class="form-label">Valor da Venda</label>
                             <input type="number" min="1" step="any" class="form-control" id="valorVendaAdd">
                         </div>
                         <div class="text-end">
@@ -184,29 +184,35 @@
 
             formUpdate.addEventListener('submit', function (event) {
                 event.preventDefault()
+
+                let codVendedor = document.getElementById('codVendedorUpdate').value
+                let nome = document.getElementById('nomeUpdate').value
+                let cargo = document.getElementById('cargoUpdate').value
+                let codVenda = document.getElementById('codVendaUpdate').value
+                let valorVenda = document.getElementById('valorVendaUpdate').value
+                
                 const novaVenda = {
-                    codVendedor: document.getElementById('codVendedorUpdate').value,
-                    nome: document.getElementById('nomeUpdate').value,
-                    cargo: document.getElementById('cargoUpdate').value,
-                    codVenda: document.getElementById('codVendaUpdate').value,
-                    valorVenda: document.getElementById('valorVendaUpdate').value,
+                    codVendedor,
+                    nome,
+                    cargo, 
+                    codVenda,
+                    valorVenda
                 }
-                fetch(`http://localhost:5000/update/${venda.codVendedor}`, {
+                
+                fetch(`http://localhost:5000/update/${venda.codVenda}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(novaVenda)
                 }).then(() => {
                     searchVendas()
                 })
-                toggleModal(modalEdit)
-                formUpdate.reset()
             })
         }
 
         function apagarVenda(index) {
             const apagar = confirm('Deseja apagar esta venda?')
             if (apagar) {
-                fetch(`http://localhost:5000/delete/${vendas[index].codVendedor}`, {
+                fetch(`http://localhost:5000/delete/${vendas[index].codVenda}`, {
                     method: 'DELETE',
                     headers: { 'Content-Type': 'application/json' },
                 }).then(() => {
@@ -239,7 +245,6 @@
             fetch('http://localhost:5000/api')
                 .then(response => response.json())
                 .then(dados => {
-                    console.log(dados)
                     vendas = dados
                     renderTabela()
                 })
